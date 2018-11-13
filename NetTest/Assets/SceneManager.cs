@@ -1,37 +1,63 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Runtime.InteropServices;
-using System.Text;
+using UnityEngine.Tilemaps;
 
 public class SceneManager : MonoBehaviour
 {
-    [DllImport("egp-net-plugin-Unity")]
-    private static extern int foo(int bar);
-    [DllImport("egp-net-plugin-Unity")]
-    private static extern bool initNetworking();
-    [DllImport("egp-net-plugin-Unity")]
-    private static extern IntPtr handlePacket(ref int length);
-    [DllImport("egp-net-plugin-Unity")]
-    private static extern IntPtr plsreturn(ref int length);
+    public static Tilemap floorLayer;
+    public static Tilemap entityLayer;
+    public static Tilemap wallLayer;
+    
+    public static LocalPlayer localPlayer;
 
-    int yeet;
+    private static List<Entity> entities;
+
     // Start is called before the first frame update
     void Start()
     {
-        yeet = 0;
-        Debug.Log(initNetworking());
+        floorLayer = GameObject.Find("Floor").GetComponent<Tilemap>();
+        entityLayer = GameObject.Find("Entities").GetComponent<Tilemap>();
+        wallLayer = GameObject.Find("Wall").GetComponent<Tilemap>();
+
+        localPlayer = GameObject.Find("TestPlayer").GetComponent<LocalPlayer>();
+
+        entities = new List<Entity>();
+        GameObject testEnemy = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Entities/TestEnemy"));
+        testEnemy.transform.SetParent(entityLayer.transform);
+        testEnemy.transform.localPosition = new Vector3(3, 3, 0);
+        entities.Add(testEnemy.GetComponent<Entity>());
     }
 
     // Update is called once per frame
     void Update()
     {
-        int length = 0;
-        IntPtr returnPtr = handlePacket(ref length);
-        byte[] returnData = new byte[length];
+        foreach (Entity e in entities)
+        {
+            if (Vector3.Distance(localPlayer.transform.position, e.transform.position) < 0.5f)
+            {
+                Debug.Log("FIGHT");
+            }
+        }
+    }
 
-        Marshal.Copy(returnPtr, returnData, 0, length);
-        Debug.Log(Encoding.ASCII.GetString(returnData));
+    public static bool checkWallCollision(Vector3 pos)
+    {
+        if (wallLayer.GetTile(wallLayer.WorldToCell(pos)))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool checkFloorCollision(Vector3 pos)
+    {
+        if (floorLayer.GetTile(floorLayer.WorldToCell(pos)))
+        {
+            return true;
+        }
+
+        return false;
     }
 }
