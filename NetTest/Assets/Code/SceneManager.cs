@@ -64,30 +64,24 @@ public class SceneManager : MonoBehaviour
         return false;
     }
 
-    public void UpdateEntityStates(List<EntityPacket> entityData)
+    public void UpdateEntityStates(Queue<EntityPacket> entityData)
     {
-        //Create queue for entities that are not found
-        Queue<EntityPacket> entitiesNotFound = new Queue<EntityPacket>();
-
-        //Fill with data from server
-        foreach(EntityPacket packet in entityData)
-        {
-            entitiesNotFound.Enqueue(packet);
-        }
+        //Create queue for entities that are not found and fill with data from server
+        //Queue<EntityPacket> entitiesNotFound = entityData;//new Queue<EntityPacket>(entityData);
 
         //Update player data
-        findAndUpdateData(localPlayer, ref entitiesNotFound);
+        findAndUpdateData(localPlayer, ref entityData);
 
         //Update other entities
         foreach(Entity entity in entities)
         {
-            findAndUpdateData(entity, ref entitiesNotFound);
+            findAndUpdateData(entity, ref entityData);
         }
 
         //Create entities for remaining packets
-        while(entitiesNotFound.Count > 0)
+        while(entityData.Count > 0)
         {
-            CreateEntityFromPacket(entitiesNotFound.Dequeue());
+            CreateEntityFromPacket(entityData.Dequeue());
         }
     }
 
