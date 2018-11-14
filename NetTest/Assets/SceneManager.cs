@@ -53,6 +53,7 @@ public class SceneManager : MonoBehaviour
 
     public static bool checkFloorCollision(Vector3 pos)
     {
+        pos.y -= .25f;
         if (floorLayer.GetTile(floorLayer.WorldToCell(pos)))
         {
             return true;

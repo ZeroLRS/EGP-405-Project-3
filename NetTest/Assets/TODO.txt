@@ -1,0 +1,7 @@
+TODO (Unity Project):
+
+At least for the dead recoking project, we might want
+	to change how movement works to wasd or controller
+	so that we have a real velocity to dead reckon against.
+As it is now, we don't even need dead recoking because we
+	have the exact destination for the other player.

@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LocalPlayer : Entity
 {
+    
     // Start is called before the first frame update
     override protected void EntityStart()
     {
+        identifier = Guid.NewGuid();
     }
 
     // Update is called once per frame
