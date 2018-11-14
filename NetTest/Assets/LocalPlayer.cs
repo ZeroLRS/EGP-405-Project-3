@@ -25,11 +25,10 @@ public class LocalPlayer : Entity
                 && SceneManager.checkFloorCollision(attemptMove))
             {
                 moveDestination = attemptMove;
-                moveDirection = transform.position - moveDestination;
+                moveDirection = moveDestination - transform.position;
                 moveDirection.Normalize();
             }
 
         }
     }
-
 }

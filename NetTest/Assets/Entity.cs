@@ -10,18 +10,22 @@ public abstract class Entity : MonoBehaviour
     // Rendering
     public Sprite neSprite, nwSprite, seSprite, swSprite;
     public SpriteRenderer spriteRenderer;
-    
-    public Vector3 velocity;
+
+    public float acceleration;
+    //public Vector3 velocity;
     public Vector3 moveDirection;
     public Vector3 moveDestination;
 
+    public bool deadReckon;
     protected bool lastDirUp;
     protected bool lastDirRight;
+
+    public Transform serverPosTest;
 
     // Start is called before the first frame update
     void Start()
     {
-        velocity = Vector3.zero;
+        //velocity = Vector3.zero;
         moveDirection = Vector3.zero;
         moveDestination = transform.position;
         lastDirUp = true;
@@ -32,24 +36,30 @@ public abstract class Entity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If we have a destination, move towards it at a constant speed
-        if (Vector3.Distance(transform.position, moveDestination) > 0.01f
-            && transform.position != moveDestination)
+
+        if(deadReckon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, moveDestination, 2.0f * Time.deltaTime);
-            // If we're close enough, snap us to the exact position
-            if (Vector3.Distance(transform.position, moveDestination) < 0.01f)
+            DeadReckoning();
+
+            if (serverPosTest)
             {
-                transform.position = moveDestination;
+                MoveTest();
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    transform.position = BlendWithReckoning(serverPosTest.position);
+                }
             }
         }
+        else
+            Move();
 
         // Change sprite based on move direction
         if (moveDirection != Vector3.zero)
         {
-            if (moveDirection.y > 0)
+            if (moveDirection.y < 0)
             {
-                if (moveDirection.x > 0)
+                if (moveDirection.x < 0)
                 {
                     spriteRenderer.sprite = swSprite;
                 }
@@ -60,7 +70,7 @@ public abstract class Entity : MonoBehaviour
             }
             else
             {
-                if (moveDirection.x > 0)
+                if (moveDirection.x < 0)
                 {
                     spriteRenderer.sprite = nwSprite;
                 }
@@ -71,6 +81,70 @@ public abstract class Entity : MonoBehaviour
             }
         }
         EntityUpdate();
+    }
+
+    void Move()
+    {
+
+        // If we have a destination, move towards it at a constant speed
+        if (Vector3.Distance(transform.position, moveDestination) > 0.01f
+            && transform.position != moveDestination)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, moveDestination, acceleration * Time.deltaTime);
+            // If we're close enough, snap us to the exact position
+            if (Vector3.Distance(transform.position, moveDestination) < 0.01f)
+            {
+                transform.position = moveDestination;
+            }
+        }
+    }
+
+    void MoveTest()
+    {
+        // If we have a destination, move towards it at a constant speed
+        if (Vector3.Distance(serverPosTest.position, moveDestination) > 0.01f
+            && serverPosTest.position != moveDestination)
+        {
+            serverPosTest.position = Vector3.MoveTowards(serverPosTest.position, moveDestination, 0.5f * acceleration * Time.deltaTime);
+            // If we're close enough, snap us to the exact position
+            if (Vector3.Distance(serverPosTest.position, moveDestination) < 0.01f)
+            {
+                serverPosTest.position = moveDestination;
+            }
+        }
+    }
+    void DeadReckoning()
+    {
+        // If we have a destination, move towards it
+        if (Vector3.Distance(transform.position, moveDestination) > 0.05f
+            && transform.position != moveDestination)
+        {               
+            Vector3 Pt = transform.position;
+            Vector3 PtDeriv = moveDirection * (acceleration * Time.deltaTime);
+            //Pt.x += (moveDirection.x) + (acceleration * Time.deltaTime);
+            //Pt.y += (moveDirection.y) + (acceleration * Time.deltaTime);
+
+            Vector3 destination = Pt + PtDeriv;
+            transform.position = Vector3.MoveTowards(transform.position, destination, acceleration * Time.deltaTime);
+
+            // If we're close enough, snap us to the exact position
+            if (Vector3.Distance(transform.position, moveDestination) < 0.05f)
+            {
+                transform.position = moveDestination;
+            }
+        }
+    }
+
+    Vector3 BlendWithReckoning(Vector3 serverPos)
+    {
+        Vector3 Pt = transform.position;
+
+        if (serverPos == Pt)
+            return serverPos;
+
+        Vector3 blendPos = (Pt + serverPos) / 2;
+
+        return blendPos;
     }
 
     protected abstract void EntityUpdate();
