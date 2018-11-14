@@ -85,3 +85,10 @@ public class NetworkManager : MonoBehaviour
         return BitConverter.ToSingle(reversed, 0);
     }
 }
+
+public struct EntityPacket
+{
+    public Guid identifier;
+    public Vector3 position;
+    public Vector3 destination;
+}

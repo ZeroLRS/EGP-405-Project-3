@@ -135,6 +135,19 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
+    public void UpdateState(EntityPacket packet)
+    {
+        if(identifier != packet.identifier)
+            identifier = packet.identifier;
+
+        moveDestination = packet.destination;
+
+        if (deadReckon)
+            BlendWithReckoning(packet.position);
+        else
+            transform.position = packet.position;
+    }
+
     Vector3 BlendWithReckoning(Vector3 serverPos)
     {
         Vector3 Pt = transform.position;

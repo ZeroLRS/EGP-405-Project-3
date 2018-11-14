@@ -2166,10 +2166,9 @@ MonoBehaviour:
   swSprite: {fileID: 21300000, guid: b0afcc9b66f83e441bc452ce28c24c4d, type: 3}
   spriteRenderer: {fileID: 889693138}
   acceleration: 2
-  velocity: {x: 0, y: 0, z: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   moveDestination: {x: 0, y: 0, z: 0}
-  deadReckon: 0
+  deadReckon: 1
   serverPosTest: {fileID: 1448224700}
 --- !u!1 &1262319916
 GameObject:
