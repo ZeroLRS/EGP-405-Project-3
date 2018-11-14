@@ -2061,7 +2061,7 @@ Transform:
   m_GameObject: {fileID: 870485509}
   m_LocalRotation: {x: -0, y: -0, z: -0.0063315425, w: 0.99998}
   m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 889693137}
   m_RootOrder: 0
@@ -2093,7 +2093,7 @@ Transform:
   m_GameObject: {fileID: 889693136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 870485512}
   m_Father: {fileID: 444921552}
@@ -2136,7 +2136,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 93db46eb15cc653479a41404b743cd82, type: 3}
+  m_Sprite: {fileID: 21300000, guid: de61f2f43f6bd044aa3998c38b0aaf7b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2159,10 +2159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a7d067a5fde4b4f9866680860e14cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neSprite: {fileID: 21300000, guid: 1b655afcbacd7b44a9efb1c6761a2a23, type: 3}
-  nwSprite: {fileID: 21300000, guid: 7a39ac055308d3b479f241e86b50f411, type: 3}
-  seSprite: {fileID: 21300000, guid: 7e0e8e295308ec243bc499d7de8d5e04, type: 3}
-  swSprite: {fileID: 21300000, guid: 93db46eb15cc653479a41404b743cd82, type: 3}
+  neSprite: {fileID: 21300000, guid: 624f846ad5f8e9943bef40305a032a58, type: 3}
+  nwSprite: {fileID: 21300000, guid: 16876a7159bd4b64baf35b01242beb97, type: 3}
+  seSprite: {fileID: 21300000, guid: de61f2f43f6bd044aa3998c38b0aaf7b, type: 3}
+  swSprite: {fileID: 21300000, guid: b0afcc9b66f83e441bc452ce28c24c4d, type: 3}
   spriteRenderer: {fileID: 889693138}
   velocity: {x: 0, y: 0, z: 0}
   moveDirection: {x: 0, y: 0, z: 0}

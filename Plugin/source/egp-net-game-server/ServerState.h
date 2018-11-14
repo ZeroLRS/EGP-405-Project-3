@@ -5,8 +5,6 @@
 
 //class DemoState;
 class DemoPeerManager;
-class BallUnit;
-class BouncingBallManager;
 class InputManager;
 
 namespace RakNet
@@ -27,7 +25,6 @@ class ServerState
 private:
 	//DemoState* localState;
 
-	BouncingBallManager* mpBouncingBallManager;
 	InputManager* mpInputManager;
 
 	DataModel currentDataModel;
@@ -58,7 +55,6 @@ public:
 
 	inline DataModel getCurrentModel() { return currentDataModel; };
 	inline DataModel setCurrentModel(DataModel _nextModel) { return currentDataModel = _nextModel; };
-	inline BouncingBallManager* getUnitManager() { return mpBouncingBallManager; };
 	inline bool shouldSendState() { return sendGameState; };
 	inline bool shouldSendState(bool _flag) { return sendGameState = _flag; };
 	void exitLoop();

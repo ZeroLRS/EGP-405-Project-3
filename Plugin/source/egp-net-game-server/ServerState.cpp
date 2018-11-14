@@ -1,7 +1,6 @@
 #include "ServerState.h"
 #include <iostream>
 #include <string>
-#include "egp-net-framework/BouncingBallManager.h"
 #include "egp-net-framework/DemoPeerManager.h"
 
 ServerState::ServerState()
@@ -70,10 +69,9 @@ void ServerState::simulateDemo()
 
 	float elapsedTime = (float)elapsedChronoTime.count();
 
-	mpBouncingBallManager->update(elapsedTime / 1000);
+	//mpBouncingBallManager->update(elapsedTime / 1000);
 
 	lastTimeMS = currentTimeMS;
-	std::cout << mpBouncingBallManager->ourBallUnits.size() << std::endl;
 }
 
 void ServerState::updateDataPush()
@@ -82,14 +80,6 @@ void ServerState::updateDataPush()
 	simulateDemo();
 
 
-	std::lock_guard<std::mutex> lock(mpBouncingBallManager->ballLock);
-	RakNet::BitStream* bs = new RakNet::BitStream();
-	unsigned int packetSize = 0;
-	packetSize += sizeof((char)DemoPeerManager::e_id_gameStateUpdate);
-	//printf("PacketSize: %i", packetSize);
-	bs->Write((char)DemoPeerManager::e_id_gameStateUpdate);
-	packetSize += mpBouncingBallManager->Serialize(bs);
-	DemoPeerManager::getInstance()->sendGameStatePacket(bs, packetSize);
 
 	
 }
@@ -140,7 +130,6 @@ bool ServerState::initShare()
 
 bool ServerState::init()
 {
-	mpBouncingBallManager = BouncingBallManager::getInstance();;
 
 	std::string modelSelect;
 	std::cout << "Select Model:\n\tData (P)ush\n\tData (S)hare\n\tData (C)oupled\n";

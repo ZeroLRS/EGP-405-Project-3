@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,10 +41,47 @@ public class NetworkManager : MonoBehaviour
     private void netTest()
     {
         int length = 0;
+        int i = 0;
         IntPtr returnPtr = handlePacket(ref length);
         byte[] returnData = new byte[length];
 
         Marshal.Copy(returnPtr, returnData, 0, length);
-        Debug.Log(Encoding.ASCII.GetString(returnData));
+
+        int id = returnData[i];
+        i++;
+
+        if (returnData[0] == 136)
+        {
+            Debug.Log("Update Network Player");
+
+            //for (; i < 5; i++)
+            //{
+            //    Debug.Log(returnData[i]);
+            //}
+
+            Vector3 zoop = new Vector3();
+            zoop.x = bytesToFloat(returnData, i);
+            i += 4;
+            zoop.y = bytesToFloat(returnData, i);
+            i += 4;
+            zoop.z = bytesToFloat(returnData, i);
+            i += 4;
+
+            Debug.Log(zoop);
+            Debug.Log("Done");
+
+        }
+
+        //Debug.Log(Encoding.ASCII.GetString(returnData));
+    }
+
+    private float bytesToFloat(byte[] data, int startIndex)
+    {
+        byte[] reversed = new byte[4];
+        for (int i = 0; i < 4; i++)
+        {
+            reversed[i] = data[startIndex + 3 - i];
+        }
+        return BitConverter.ToSingle(reversed, 0);
     }
 }

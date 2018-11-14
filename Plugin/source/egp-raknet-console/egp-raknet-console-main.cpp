@@ -132,10 +132,10 @@ int main(int const argc, char const *const *const argv)
 					// Use a BitStream to write a custom user message
 					// Bitstreams are easier to use than sending casted structures, 
 					//	and handle endian swapping automatically
-				//	RakNet::BitStream bsOut;
-				//	bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
-				//	bsOut.Write("Hello world");
-				//	peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+					RakNet::BitStream bsOut;
+					bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
+					bsOut.Write("Hello world");
+					peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
 
 					// ****TO-DO: write and send packet without using bitstream
 

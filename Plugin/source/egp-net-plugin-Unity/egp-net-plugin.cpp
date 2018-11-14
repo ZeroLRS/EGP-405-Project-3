@@ -14,13 +14,7 @@
 #include "RakNet/RakNetTypes.h"
 #include "RakNet/BitStream.h"
 
-enum GameMessages
-{
-	ID_CUSTOM_MESSAGE_START = ID_USER_PACKET_ENUM,
-
-	ID_GAME_MESSAGE_1,
-};
-
+#include "egp-net-framework/DemoPeerManager.h"
 
 #pragma pack(push, 1)
 
@@ -128,7 +122,7 @@ extern "C"
 			//}
 			//break;
 
-		case ID_GAME_MESSAGE_1:
+		case DemoPeerManager::ID_GAME_MESSAGE_1:
 			printf("DEBUG MESSAGE: received packet ID_GAME_MESSAGE_1.\n");
 			{
 				RakNet::RakString rs;
@@ -147,14 +141,38 @@ extern "C"
 			}
 			break;
 
+		case DemoPeerManager::UPDATE_NETWORK_PLAYER:
+			printf("DEBUG MESSAGE: received packet ID_GAME_MESSAGE_1.\n");
+			{
+				RakNet::RakString rs;
+				RakNet::BitStream bsIn(packet->data, packet->length, false);
+				//bsIn.Read(rs);
+				//printf("%s\n", rs.C_String());
+				//
+				//char* returnThis = (char*)rs.C_String();
+				//
+				//*length = (int)strlen(returnThis);
+				//return returnThis;
+				*length = packet->length;
+				return (char*) packet->data;
+
+				// ****TO-DO: read packet without using bitstream
+
+			}
+			break;
+
 		default:
 			printf("Message with identifier %i has arrived.\n", packet->data[0]);
 			break;
 		}
 
 		peer->DeallocatePacket(packet);
-		*length = sizeof("nodata");
-		return "nodata";
+		char tmpStr[] = "nodata.";
+		tmpStr[7] = packet->data[0];
+		char* toSend = (char*)malloc(strlen(tmpStr) + 1);
+		strcpy(toSend, tmpStr);
+		*length = sizeof("nodata.");
+		return toSend;
 	}
 
 	__declspec(dllexport)	// tmp linker flag, forces lib to exist
