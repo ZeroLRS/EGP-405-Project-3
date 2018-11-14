@@ -118,7 +118,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN$(PlatformArchitecture);_WINDOWS;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_USRDLL;EGP_NET_DLLEXPORT;_DEBUG</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(EGP_NET_FW)include\;$(EGP_NET_FW)source\$(ProjectName);$(DEV_SDK_DIR)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EGP_NET_FW)include\;$(EGP_NET_FW)source\$(ProjectName)\;$(DEV_SDK_DIR)include\;$(EGP_NET_FW)source\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SDLCheck>true</SDLCheck>

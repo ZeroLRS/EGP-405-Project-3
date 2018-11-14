@@ -21,10 +21,31 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\include\egp-net\egp-net.h" />
     <ClInclude Include="..\..\..\include\egp-net\fw\egpDummyClass.h" />
+    <ClInclude Include="..\..\..\include\egp-net\fw\egpNetPeerManager.h" />
+    <ClInclude Include="..\..\..\include\egp-net\fw\egpNetSerializableData.h" />
+    <ClInclude Include="..\..\..\include\egp-net\fw\egpNetSerializableDataExample.h" />
+    <ClInclude Include="..\..\..\include\egp-net\fw\utils\egpInput.h" />
+    <ClInclude Include="..\..\..\include\egp-net\fw\utils\egpThread.h" />
+    <ClInclude Include="..\..\..\include\egp-net\fw\utils\egpTimer.h" />
+    <ClInclude Include="..\..\..\source\egp-net-framework\BouncingBall.h" />
+    <ClInclude Include="..\..\..\source\egp-net-framework\BouncingBallManager.h" />
+    <ClInclude Include="..\..\..\source\egp-net-framework\DemoPeerManager.h" />
+    <ClInclude Include="..\..\..\source\egp-net-framework\Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\egp-net-framework\BouncingBall.cpp" />
+    <ClCompile Include="..\..\..\source\egp-net-framework\BouncingBallManager.cpp" />
+    <ClCompile Include="..\..\..\source\egp-net-framework\DemoPeerManager.cpp" />
     <ClCompile Include="..\..\..\source\egp-net-framework\egp-net\egp-net.cpp" />
     <ClCompile Include="..\..\..\source\egp-net-framework\egp-net\fw\egpDummyClass.cpp" />
+    <ClCompile Include="..\..\..\source\egp-net-framework\egp-net\fw\egpNetPeerManager.cpp" />
+    <ClCompile Include="..\..\..\source\egp-net-framework\egp-net\fw\egpNetSerializableDataExample.cpp" />
+    <ClCompile Include="..\..\..\source\egp-net-framework\egp-net\fw\utils\egpThread.c" />
+    <ClCompile Include="..\..\..\source\egp-net-framework\Vector2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\include\egp-net\fw\utils\_inl\egpInput.inl" />
+    <None Include="..\..\..\include\egp-net\fw\utils\_inl\egpTimer.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4C7EB86C-6A0B-4C25-A7A9-E83033DC6A94}</ProjectGuid>
@@ -99,7 +120,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);_DEBUG</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(EGP_NET_FW)include\;$(EGP_NET_FW)source\$(ProjectName);$(DEV_SDK_DIR)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -115,7 +136,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;_DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);_DEBUG</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(EGP_NET_FW)include\;$(EGP_NET_FW)source\$(ProjectName);$(DEV_SDK_DIR)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -133,7 +154,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(EGP_NET_FW)include\;$(EGP_NET_FW)source\$(ProjectName);$(DEV_SDK_DIR)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -152,7 +173,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN$(PlatformArchitecture);_LIB;WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(EGP_NET_FW)include\;$(EGP_NET_FW)source\$(ProjectName);$(DEV_SDK_DIR)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
