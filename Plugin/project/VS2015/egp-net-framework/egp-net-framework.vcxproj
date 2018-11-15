@@ -29,8 +29,8 @@
     <ClInclude Include="..\..\..\include\egp-net\fw\utils\egpTimer.h" />
     <ClInclude Include="..\..\..\source\egp-net-framework\DemoPeerManager.h" />
     <ClInclude Include="..\..\..\source\egp-net-framework\Vector2.h" />
+    <ClInclude Include="..\..\..\source\egp-net-framework\Vector3.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\egp-net-framework\DemoPeerManager.cpp" />
@@ -40,8 +40,8 @@
     <ClCompile Include="..\..\..\source\egp-net-framework\egp-net\fw\egpNetSerializableDataExample.cpp" />
     <ClCompile Include="..\..\..\source\egp-net-framework\egp-net\fw\utils\egpThread.c" />
     <ClCompile Include="..\..\..\source\egp-net-framework\Vector2.cpp" />
+    <ClCompile Include="..\..\..\source\egp-net-framework\Vector3.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\include\egp-net\fw\utils\_inl\egpInput.inl" />

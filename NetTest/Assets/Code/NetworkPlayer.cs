@@ -21,6 +21,5 @@ public class NetworkPlayer : Entity
     // Update is called once per frame
     override protected void EntityUpdate()
     {
-        
     }
 }

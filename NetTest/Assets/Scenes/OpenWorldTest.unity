@@ -2627,7 +2627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68dc7539a828a84b9baeb16ee0349f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableNetworking: 0
+  enableNetworking: 1
 --- !u!114 &2080143894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2640,6 +2640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e96f7c853be245c42a17a8d44c2a4a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entityPrefab: {fileID: 8691098081085853563, guid: a972767b5823dfa42a80be76910ee90b,
+    type: 3}
 --- !u!4 &2080143895
 Transform:
   m_ObjectHideFlags: 0

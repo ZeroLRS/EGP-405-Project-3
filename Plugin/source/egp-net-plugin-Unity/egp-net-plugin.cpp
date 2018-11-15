@@ -15,6 +15,7 @@
 #include "RakNet/BitStream.h"
 
 #include "egp-net-framework/DemoPeerManager.h"
+#include "egp-net-framework/Vector3.h"
 
 #pragma pack(push, 1)
 
@@ -30,10 +31,6 @@ struct GameMessageData
 
 // create and return instance of peer interface
 RakNet::RakPeerInterface *peer;
-
-// global peer settings for this app
-const unsigned short serverPort = 60000;
-const unsigned int maxClients = 20;
 
 RakNet::Packet *packet;
 RakNet::SocketDescriptor sd;
@@ -54,9 +51,11 @@ extern "C"
 
 		peer->Startup(1, &sd, 1);
 
-		char* ip = "127.0.0.1";
+		RakNet::ConnectionAttemptResult result =
+			peer->Connect("127.0.0.1", DemoPeerManager::getInstance()->serverPort, 0, 0);
 
-		peer->Connect(ip, serverPort, 0, 0);
+		if (result > 0)
+			return false;
 
 		return true;
 	}
@@ -146,18 +145,9 @@ extern "C"
 			{
 				RakNet::RakString rs;
 				RakNet::BitStream bsIn(packet->data, packet->length, false);
-				//bsIn.Read(rs);
-				//printf("%s\n", rs.C_String());
-				//
-				//char* returnThis = (char*)rs.C_String();
-				//
-				//*length = (int)strlen(returnThis);
-				//return returnThis;
+
 				*length = packet->length;
 				return (char*) packet->data;
-
-				// ****TO-DO: read packet without using bitstream
-
 			}
 			break;
 
@@ -181,5 +171,25 @@ extern "C"
 		char* arrayTest = "yeeting";
 		*length = sizeof("yeeting");
 		return arrayTest;
+	}
+
+	__declspec(dllexport)	// tmp linker flag, forces lib to exist
+	bool sendEntityToServer(int guidLength, char* guid, Vector3 position, Vector3 destination)
+	{
+		RakNet::BitStream bsOut;
+		bsOut.Write((RakNet::MessageID)DemoPeerManager::UPDATE_NETWORK_PLAYER);
+		bsOut.Write(guidLength);
+
+		for (int i = 0; i < guidLength; i++)
+		{
+			bsOut.Write(guid[i]);
+		}
+
+		bsOut.Write(position);
+		bsOut.Write(destination);
+
+		peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+
+		return true;
 	}
 }

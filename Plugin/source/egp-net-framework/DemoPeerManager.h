@@ -31,7 +31,9 @@ public:
 		e_id_packetBegin = ID_USER_PACKET_ENUM,
 
 		ID_GAME_MESSAGE_1,
-		UPDATE_NETWORK_PLAYER,
+		UPDATE_NETWORK_PLAYER, // Client sends server a single entity
+		UPDATE_GAME_STATE, // Server sends client update of all current entities
+
 		// ****TO-DO: implement general identifiers
 		// these should be peer-type-agnostic, i.e. either server or client
 		// some suggestions: 
@@ -52,8 +54,11 @@ public:
 	static DemoPeerManager* getInstance();
 	std::string serverAddress;
 	inline int getConnectedClients() { return mp_peer->NumberOfConnections(); };
+	
 
-	int coupledPacketsRecieved;
+	const unsigned int serverPort = 4040;
+	// Time between ticks in MS - only used for sending
+	const float networkTickRateMS = 0.0f;
 };
 
 
