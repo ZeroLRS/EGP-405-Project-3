@@ -29,7 +29,7 @@ void ServerState::updateState()
 
 	if (elapsedNetworkTime > DemoPeerManager::getInstance()->networkTickRateMS)
 	{
-		printf("Sending state to players");
+		//printf("Sending state to players\n");
 		//broadcastState();
 
 		lastNetworkUpdateMS = currentTimeMS;

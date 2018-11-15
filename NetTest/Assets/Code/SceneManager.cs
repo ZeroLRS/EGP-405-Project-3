@@ -15,6 +15,8 @@ public class SceneManager : MonoBehaviour
 
     private static List<Entity> entities;
 
+    public static Queue<EntityPacket> entityPackets;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,15 +27,19 @@ public class SceneManager : MonoBehaviour
         localPlayer = GameObject.Find("TestPlayer").GetComponent<LocalPlayer>();
 
         entities = new List<Entity>();
-        GameObject testEnemy = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Entities/TestEnemy"));
-        testEnemy.transform.SetParent(entityLayer.transform);
-        testEnemy.transform.localPosition = new Vector3(3, 3, 0);
-        entities.Add(testEnemy.GetComponent<Entity>());
+        entityPackets = new Queue<EntityPacket>();
+
+        //GameObject testEnemy = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Entities/TestEnemy"));
+        //testEnemy.transform.SetParent(entityLayer.transform);
+        //testEnemy.transform.localPosition = new Vector3(3, 3, 0);
+        //entities.Add(testEnemy.GetComponent<Entity>());
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateEntityStates();
+
         foreach (Entity e in entities)
         {
             if (Vector3.Distance(localPlayer.transform.position, e.transform.position) < 0.5f)
@@ -64,28 +70,28 @@ public class SceneManager : MonoBehaviour
         return false;
     }
 
-    public void UpdateEntityStates(Queue<EntityPacket> entityData)
+    public void UpdateEntityStates()
     {
         //Create queue for entities that are not found and fill with data from server
         //Queue<EntityPacket> entitiesNotFound = entityData;//new Queue<EntityPacket>(entityData);
 
         //Update player data
-        findAndUpdateData(localPlayer, ref entityData);
+        findAndUpdateData(localPlayer, entityPackets);
 
         //Update other entities
         foreach(Entity entity in entities)
         {
-            findAndUpdateData(entity, ref entityData);
+            findAndUpdateData(entity, entityPackets);
         }
 
         //Create entities for remaining packets
-        while(entityData.Count > 0)
+        while(entityPackets.Count > 0)
         {
-            CreateEntityFromPacket(entityData.Dequeue());
+            CreateEntityFromPacket(entityPackets.Dequeue());
         }
     }
 
-    bool findAndUpdateData(Entity entity, ref Queue<EntityPacket> serverData)
+    bool findAndUpdateData(Entity entity, Queue<EntityPacket> serverData)
     {        
         int numLoops = serverData.Count;
 
@@ -107,8 +113,8 @@ public class SceneManager : MonoBehaviour
 
             --numLoops;
         }
-
-        Debug.LogError("Packet was not found for entity " + entity.gameObject.name + ". Unable to update");
+        
+        Debug.LogWarning("Packet was not found for entity " + entity.gameObject.name + ". Unable to update");
 
         return false;
     }
@@ -123,7 +129,12 @@ public class SceneManager : MonoBehaviour
             return;
         }
 
+        entities.Add(newEntity);
+
         newEntity.transform.position = data.position;
+        newEntity.moveDestination = data.destination;
+        newEntity.deadReckon = false;
+        newEntity.acceleration = 2.0f;
         newEntity.UpdateState(data);
     }
 }

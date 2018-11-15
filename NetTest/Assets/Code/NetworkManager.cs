@@ -29,6 +29,7 @@ enum MessageID
 public class NetworkManager : MonoBehaviour
 {
     public bool enableNetworking;
+    public SceneManager sceneManager; // TODO: Replace with entity manager for final.
 
     [DllImport("egp-net-plugin-Unity")]
     private static extern int foo(int bar);
@@ -71,7 +72,7 @@ public class NetworkManager : MonoBehaviour
         if (enableNetworking)
         {
             // If it's been the time interval we send updates at
-            Debug.Log("Current Time: " + Time.time + " Last Update + Interval: " + lastNetworkUpdate + networkTickRateMS);
+            //Debug.Log("Current Time: " + Time.time + " Last Update + Interval: " + lastNetworkUpdate + networkTickRateMS);
             if (Time.time >= lastNetworkUpdate + networkTickRateMS)
             {
                 Debug.Log("Network Update");
@@ -115,14 +116,14 @@ public class NetworkManager : MonoBehaviour
         Marshal.Copy(returnPtr, returnData, 0, length);
 
         int messageID = returnData[index];
-        index++;
+        index += 4;
 
         switch (messageID)
         {
            case (int)MessageID.UPDATE_NETWORK_PLAYER:
            {
-                Debug.Log("Update Network Player");
-
+                //Debug.Log("Update Network Player");
+                
                 int guidLength = returnData[index];
                 index++;
                 
@@ -130,19 +131,19 @@ public class NetworkManager : MonoBehaviour
                 index += guidLength;
                 
                 Vector3 position = new Vector3();
-                position.x = bytesToFloat(returnData, index);
+                position.z = bytesToFloat(returnData, index);
                 index += 4;
                 position.y = bytesToFloat(returnData, index);
                 index += 4;
-                position.z = bytesToFloat(returnData, index);
+                position.x = bytesToFloat(returnData, index);
                 index += 4;
                 
                 Vector3 destination = new Vector3();
-                destination.x = bytesToFloat(returnData, index);
+                destination.z = bytesToFloat(returnData, index);
                 index += 4;
                 destination.y = bytesToFloat(returnData, index);
                 index += 4;
-                destination.z = bytesToFloat(returnData, index);
+                destination.x = bytesToFloat(returnData, index);
                 index += 4;
                 
                 EntityPacket newPacket;
@@ -150,9 +151,14 @@ public class NetworkManager : MonoBehaviour
                 newPacket.position = position;
                 newPacket.destination = destination;
 
-                Debug.Log("Pos:" + position);
+                //Debug.Log(identifer);
 
-                Debug.Log("Done");
+                if (sceneManager)
+                {
+                    SceneManager.entityPackets.Enqueue(newPacket);
+                }
+
+                //Debug.Log("Done");
             }
                 break;
             case 110: // If there isn't nodata.
@@ -180,7 +186,13 @@ public class NetworkManager : MonoBehaviour
 
     private Guid bytesToGuid(byte[] data, int startIndex, int length)
     {
+        Debug.Log("Guid Length: " + length);
         byte[] guidBytes = new byte[length];
+        for (int i = 0; i < length; i++)
+        {
+            guidBytes[i] = data[startIndex + i];
+        }
+
         Guid newGuid = new Guid(guidBytes);
 
         return newGuid;

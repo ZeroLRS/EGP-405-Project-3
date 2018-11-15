@@ -60,7 +60,7 @@ int DemoPeerManager::ProcessPacket(const RakNet::Packet *const packet, const uns
 	printf("Updating network player:");
 	{
 		RakNet::BitStream stream(packet->data, packet->length, false);
-			
+
 		sendEntity(&stream, mp_peer->GetIndexFromSystemAddress(packet->systemAddress));
 		
 		// Uncomment when the server starts tracking entities
