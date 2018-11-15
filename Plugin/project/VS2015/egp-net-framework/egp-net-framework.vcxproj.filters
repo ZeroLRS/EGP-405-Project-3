@@ -66,10 +66,10 @@
     <ClInclude Include="..\..\..\source\egp-net-framework\DemoPeerManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="..\..\..\source\egp-net-framework\Vector3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\egp-net-framework\Vector3.h">
+    <ClInclude Include="..\..\..\source\egp-net-framework\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,10 +95,10 @@
     <ClCompile Include="..\..\..\source\egp-net-framework\DemoPeerManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="..\..\..\source\egp-net-framework\Vector3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\egp-net-framework\Vector3.cpp">
+    <ClCompile Include="..\..\..\source\egp-net-framework\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

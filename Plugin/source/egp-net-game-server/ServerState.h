@@ -3,6 +3,8 @@
 #include <vector>
 #include <chrono>
 
+#include "egp-net-framework/Entity.h"
+
 //class DemoState;
 class DemoPeerManager;
 class InputManager;
@@ -26,6 +28,7 @@ private:
 	//Timing
 	std::chrono::time_point<std::chrono::system_clock> lastTime;
 	std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> lastTimeMS;
+	std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> lastNetworkUpdateMS;
 
 public:
 	ServerState();
@@ -39,5 +42,6 @@ public:
 	inline bool shouldSendState(bool _flag) { return sendGameState = _flag; };
 	void exitLoop();
 	bool shouldLoop();
+	ServerState* getInstance();
 };
 

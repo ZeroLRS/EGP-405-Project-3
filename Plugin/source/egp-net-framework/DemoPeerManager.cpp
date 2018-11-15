@@ -61,27 +61,30 @@ int DemoPeerManager::ProcessPacket(const RakNet::Packet *const packet, const uns
 	{
 		RakNet::BitStream stream(packet->data, packet->length, false);
 			
-		stream.IgnoreBytes(sizeof((char)UPDATE_NETWORK_PLAYER));
-			
-		int guidLength;
-		Vector3 position;
-		Vector3 destination;
-			
-		stream.Read(guidLength);
-		char* guid = new char[guidLength];
-
-		stream.Read(guid, guidLength);
-
-		stream.Read(position);
-		stream.Read(destination);
-
-		printf("GUID: %s\nPosition: %f, %f, %f\nDestination: %f, %f, %f",
-			guid, position.x, position.y, position.z,
-			destination.x, destination.y, destination.z);
+		sendEntity(&stream, mp_peer->GetIndexFromSystemAddress(packet->systemAddress));
+		
+		// Uncomment when the server starts tracking entities
+		//
+		//stream.IgnoreBytes(sizeof((char)UPDATE_NETWORK_PLAYER));
+		//
+		//int guidLength;
+		//Vector3 position;
+		//Vector3 destination;
+		//	
+		//stream.Read(guidLength);
+		//char* guid = new char[guidLength];
+		//
+		//stream.Read(guid, guidLength);
+		//
+		//stream.Read(position);
+		//stream.Read(destination);
+		//
+		//printf("GUID: %s\nPosition: %f, %f, %f\nDestination: %f, %f, %f",
+		//	guid, position.x, position.y, position.z,
+		//	destination.x, destination.y, destination.z);
 
 		std::cout << "Done" << std::endl;
-		break;
-		}
+	}
 		break;
 	default:
 		std::cout << "ID" << packet->data[0] << std::endl;
@@ -91,9 +94,9 @@ int DemoPeerManager::ProcessPacket(const RakNet::Packet *const packet, const uns
 	return 0;
 }
 
-void DemoPeerManager::sendEntity(RakNet::BitStream* bs)
+void DemoPeerManager::sendEntity(RakNet::BitStream* bs, int peer) const
 {
-	SendPacket(bs, -1, true, true);
+	SendPacket(bs, peer, true, true);
 }
 
 

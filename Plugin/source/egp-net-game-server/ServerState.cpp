@@ -21,13 +21,19 @@ void ServerState::updateState()
 	std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> currentTimeMS
 		= std::chrono::time_point_cast<std::chrono::milliseconds>(currentTime);
 
-	std::chrono::microseconds elapsedChronoTime = currentTimeMS - lastTimeMS;
+	std::chrono::milliseconds elapsedChronoTime = currentTimeMS - lastTimeMS;
+	std::chrono::milliseconds elapsedChronoNetworkTime = currentTimeMS - lastNetworkUpdateMS;
 
 	float elapsedTime = (float)elapsedChronoTime.count();
+	float elapsedNetworkTime = (float)elapsedChronoNetworkTime.count();
 
-	//printf("elapsedTime: %f", elapsedTime);
+	if (elapsedNetworkTime > DemoPeerManager::getInstance()->networkTickRateMS)
+	{
+		printf("Sending state to players");
+		//broadcastState();
 
-	//mpBouncingBallManager->update(elapsedTime / 1000);
+		lastNetworkUpdateMS = currentTimeMS;
+	}
 
 	lastTimeMS = currentTimeMS;
 
@@ -60,7 +66,15 @@ bool ServerState::init()
 	//Timing
 	lastTime = std::chrono::system_clock::now();
 	lastTimeMS = std::chrono::time_point_cast<std::chrono::milliseconds>(lastTime);
+	lastNetworkUpdateMS = std::chrono::time_point_cast<std::chrono::milliseconds>(lastTime);
 
 	return true;
 
+}
+
+ServerState* ServerState::getInstance()
+{
+	static ServerState instance;
+
+	return &instance;
 }

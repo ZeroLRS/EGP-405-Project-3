@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Vector3.h"
-#include <string>
 
-class Entity
+struct Entity
 {
-public:
-	char* GUID;
+	char* guid;
+	int guidLength;
 
 	Vector3 position;
 	Vector3 velocity;

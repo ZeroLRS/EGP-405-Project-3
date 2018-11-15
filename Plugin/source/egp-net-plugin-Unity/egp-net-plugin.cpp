@@ -98,11 +98,8 @@ extern "C"
 				//bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
 				//bsOut.Write("Hello world");
 				//peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
-		
-		
-		
+				
 				// ****TO-DO: write and send packet without using bitstream
-		
 			}
 			break;
 		case ID_NEW_INCOMING_CONNECTION:

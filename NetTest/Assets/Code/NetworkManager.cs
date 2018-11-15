@@ -45,13 +45,17 @@ public class NetworkManager : MonoBehaviour
     [DllImport("egp-net-plugin-Unity")]
     private static extern bool sendEntityToServer(int guidSize, byte[] guid, SimpleVector3 position, SimpleVector3 destination);
 
-    private const float networkTickRateMS = 100.0f;
+    // We want to send data to the server 10 times a second
+    //private const float networkTickRateMS = 100.0f / 1000.0f;
+    private const float networkTickRateMS = 500.0f / 1000.0f; //Debug: twice a second
+    private float lastNetworkUpdate;
 
     // Start is called before the first frame update
     void Start()
     {
         if (enableNetworking)
         {
+            lastNetworkUpdate = Time.time;
             string ip = "127.0.0.1";
             IntPtr ipPtr = Marshal.StringToHGlobalAnsi(ip);
             if (initNetworking(ipPtr))
@@ -66,8 +70,19 @@ public class NetworkManager : MonoBehaviour
     {
         if (enableNetworking)
         {
+            // If it's been the time interval we send updates at
+            Debug.Log("Current Time: " + Time.time + " Last Update + Interval: " + lastNetworkUpdate + networkTickRateMS);
+            if (Time.time >= lastNetworkUpdate + networkTickRateMS)
+            {
+                Debug.Log("Network Update");
+                // Reset the timer
+                lastNetworkUpdate = Time.time;
+                // Debug Test
+                SendEntity(SceneManager.localPlayer);
+            }
+
+            // Check for and queue packets as fast and often as we can.
             HandleNetworking();
-            SendEntity(SceneManager.localPlayer);
         }
     }
 
@@ -102,46 +117,55 @@ public class NetworkManager : MonoBehaviour
         int messageID = returnData[index];
         index++;
 
-        if (messageID == (int)MessageID.UPDATE_NETWORK_PLAYER)
+        switch (messageID)
         {
-            Debug.Log("Update Network Player");
+           case (int)MessageID.UPDATE_NETWORK_PLAYER:
+           {
+                Debug.Log("Update Network Player");
 
-            //int guidLength = returnData[index];
-            //index++;
-            //
-            //Guid identifer = bytesToGuid(returnData, index, guidLength);
-            //index += guidLength;
-            //
-            //Vector3 position = new Vector3();
-            //position.x = bytesToFloat(returnData, index);
-            //index += 4;
-            //position.y = bytesToFloat(returnData, index);
-            //index += 4;
-            //position.z = bytesToFloat(returnData, index);
-            //index += 4;
-            //
-            //Vector3 destination = new Vector3();
-            //destination.x = bytesToFloat(returnData, index);
-            //index += 4;
-            //destination.y = bytesToFloat(returnData, index);
-            //index += 4;
-            //destination.z = bytesToFloat(returnData, index);
-            //index += 4;
-            //
-            //EntityPacket newPacket;
-            //newPacket.identifier = identifer;
-            //newPacket.position = position;
-            //newPacket.destination = destination;
-            
-            Debug.Log("Done");
+                int guidLength = returnData[index];
+                index++;
+                
+                Guid identifer = bytesToGuid(returnData, index, guidLength);
+                index += guidLength;
+                
+                Vector3 position = new Vector3();
+                position.x = bytesToFloat(returnData, index);
+                index += 4;
+                position.y = bytesToFloat(returnData, index);
+                index += 4;
+                position.z = bytesToFloat(returnData, index);
+                index += 4;
+                
+                Vector3 destination = new Vector3();
+                destination.x = bytesToFloat(returnData, index);
+                index += 4;
+                destination.y = bytesToFloat(returnData, index);
+                index += 4;
+                destination.z = bytesToFloat(returnData, index);
+                index += 4;
+                
+                EntityPacket newPacket;
+                newPacket.identifier = identifer;
+                newPacket.position = position;
+                newPacket.destination = destination;
 
+                Debug.Log("Pos:" + position);
+
+                Debug.Log("Done");
+            }
+                break;
+            case 110: // If there isn't nodata.
+            {
+            }
+                break;
+            default:
+            {
+                Debug.Log("Unknown MessageID: " + messageID);
+            }
+                break;
         }
-        else if (messageID != 110) // If there isn't nodata.
-        {
-            Debug.Log("Unknown MessageID: " + messageID);
-        }
-
-        //Debug.Log(Encoding.ASCII.GetString(returnData));
+        
     }
 
     private float bytesToFloat(byte[] data, int startIndex)
