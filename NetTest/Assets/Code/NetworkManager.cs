@@ -35,11 +35,17 @@ public class NetworkManager : MonoBehaviour
     [DllImport("egp-net-plugin-Unity")]
     private static extern bool initNetworking(IntPtr ip);
     [DllImport("egp-net-plugin-Unity")]
+    private static extern bool disconnect();
+    [DllImport("egp-net-plugin-Unity")]
+    private static extern bool shutdownNetworking();
+    [DllImport("egp-net-plugin-Unity")]
     private static extern IntPtr handlePacket(ref int length);
     [DllImport("egp-net-plugin-Unity")]
     private static extern IntPtr plsreturn(ref int length);
     [DllImport("egp-net-plugin-Unity")]
     private static extern bool sendEntityToServer(int guidSize, byte[] guid, SimpleVector3 position, SimpleVector3 destination);
+
+    private const float networkTickRateMS = 100.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +67,7 @@ public class NetworkManager : MonoBehaviour
         if (enableNetworking)
         {
             HandleNetworking();
-            //SendEntity(SceneManager.localPlayer);
+            SendEntity(SceneManager.localPlayer);
         }
     }
 
@@ -161,6 +167,12 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("Guid: " + e.identifier.ToString());
         Debug.Log("Position: " + e.position);
         Debug.Log("Destination: " + e.destination);
+    }
+
+    void OnApplicationQuit()
+    {
+        Debug.Log("Disconnect Status: " + disconnect());
+        Debug.Log("NetClosing Status: " + shutdownNetworking());
     }
 }
 

@@ -58,7 +58,15 @@ public:
 
 	const unsigned int serverPort = 4040;
 	// Time between ticks in MS - only used for sending
-	const float networkTickRateMS = 0.0f;
+	const float networkTickRateMS = 100.0f;
+
+	RakNet::RakPeerInterface* getPeer()
+	{
+		return mp_peer;
+	}
+
+	// Our functions called from the plugin
+	void sendEntity(RakNet::BitStream* bs);
 };
 
 

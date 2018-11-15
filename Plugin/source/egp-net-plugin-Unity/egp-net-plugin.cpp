@@ -32,8 +32,7 @@ struct GameMessageData
 // create and return instance of peer interface
 RakNet::RakPeerInterface *peer;
 
-RakNet::Packet *packet;
-RakNet::SocketDescriptor sd;
+DemoPeerManager* peerManager;
 
 extern "C"
 {
@@ -47,11 +46,20 @@ extern "C"
 	__declspec(dllexport)	// tmp linker flag, forces lib to exist
 	bool initNetworking(char* ip)
 	{
-		peer = RakNet::RakPeerInterface::GetInstance();
+		peerManager = DemoPeerManager::getInstance();
 
-		peer->Startup(1, &sd, 1);
+		if (peerManager->StartupNetworking(true, 0, 0, false) == 0)
+		{
+			return false;
+		}
 
-		peer->Connect(ip, DemoPeerManager::getInstance()->serverPort, 0, 0);
+		peerManager->serverAddress = ip;
+		if (peerManager->Connect(ip, peerManager->serverPort) <= 0)
+		{
+			return false;
+		}
+
+		peer = peerManager->getPeer();
 
 		return true;
 
@@ -60,6 +68,8 @@ extern "C"
 	__declspec(dllexport)	// tmp linker flag, forces lib to exist
 	char* handlePacket(int* length)
 	{
+		RakNet::Packet* packet;
+
 		packet = peer->Receive();
 		if (!packet)
 		{
@@ -83,16 +93,16 @@ extern "C"
 				// Use a BitStream to write a custom user message
 				// Bitstreams are easier to use than sending casted structures, 
 				//	and handle endian swapping automatically
-
+		
 				//RakNet::BitStream bsOut;
 				//bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
 				//bsOut.Write("Hello world");
 				//peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
-
-
-
+		
+		
+		
 				// ****TO-DO: write and send packet without using bitstream
-
+		
 			}
 			break;
 		case ID_NEW_INCOMING_CONNECTION:
@@ -117,7 +127,7 @@ extern "C"
 				printf("Connection lost.\n");
 			//}
 			//break;
-
+		
 		case DemoPeerManager::ID_GAME_MESSAGE_1:
 			printf("DEBUG MESSAGE: received packet ID_GAME_MESSAGE_1.\n");
 			{
@@ -126,28 +136,28 @@ extern "C"
 				bsIn.IgnoreBytes(sizeof(RakNet::MessageID));
 				bsIn.Read(rs);
 				//printf("%s\n", rs.C_String());
-
+		
 				char* returnThis = (char*)rs.C_String();
-
+		
 				*length = (int) strlen(returnThis);
 				return returnThis;
-
+		
 				// ****TO-DO: read packet without using bitstream
-
+		
 			}
 			break;
-
+		
 		case DemoPeerManager::UPDATE_NETWORK_PLAYER:
 			printf("DEBUG MESSAGE: received packet ID_GAME_MESSAGE_1.\n");
 			{
 				RakNet::RakString rs;
 				RakNet::BitStream bsIn(packet->data, packet->length, false);
-
+		
 				*length = packet->length;
 				return (char*) packet->data;
 			}
 			break;
-
+		
 		default:
 			printf("Message with identifier %i has arrived.\n", packet->data[0]);
 			break;
@@ -185,8 +195,31 @@ extern "C"
 		bsOut.Write(position);
 		bsOut.Write(destination);
 
-		peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, packet->systemAddress, false);
+		peerManager->sendEntity(&bsOut);
+
+		//peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, 
+		//	RakNet::SystemAddress(peerManager->serverAddress.c_str()), false);
 
 		return true;
+	}
+
+	__declspec(dllexport)	// tmp linker flag, forces lib to exist
+	bool disconnect()
+	{
+		if (peerManager->Disconnect() != 0)
+			return true;
+
+		return false;
+
+	}
+
+	__declspec(dllexport)	// tmp linker flag, forces lib to exist
+	bool shutdownNetworking()
+	{
+		if (peerManager->ShutdownNetworking() != 0)
+			return true;
+
+		return false;
+
 	}
 }

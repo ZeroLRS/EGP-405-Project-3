@@ -91,6 +91,11 @@ int DemoPeerManager::ProcessPacket(const RakNet::Packet *const packet, const uns
 	return 0;
 }
 
+void DemoPeerManager::sendEntity(RakNet::BitStream* bs)
+{
+	SendPacket(bs, -1, true, true);
+}
+
 
 DemoPeerManager::DemoPeerManager()
 {
