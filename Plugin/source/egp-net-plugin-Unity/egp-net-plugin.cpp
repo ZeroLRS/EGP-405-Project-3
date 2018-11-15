@@ -45,19 +45,16 @@ extern "C"
 	}
 
 	__declspec(dllexport)	// tmp linker flag, forces lib to exist
-	bool initNetworking()
+	bool initNetworking(char* ip)
 	{
 		peer = RakNet::RakPeerInterface::GetInstance();
 
 		peer->Startup(1, &sd, 1);
 
-		RakNet::ConnectionAttemptResult result =
-			peer->Connect("127.0.0.1", DemoPeerManager::getInstance()->serverPort, 0, 0);
-
-		if (result > 0)
-			return false;
+		peer->Connect(ip, DemoPeerManager::getInstance()->serverPort, 0, 0);
 
 		return true;
+
 	}
 
 	__declspec(dllexport)	// tmp linker flag, forces lib to exist

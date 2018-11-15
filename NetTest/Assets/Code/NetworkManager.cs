@@ -33,7 +33,7 @@ public class NetworkManager : MonoBehaviour
     [DllImport("egp-net-plugin-Unity")]
     private static extern int foo(int bar);
     [DllImport("egp-net-plugin-Unity")]
-    private static extern bool initNetworking(/*byte[] ip*/);
+    private static extern bool initNetworking(IntPtr ip);
     [DllImport("egp-net-plugin-Unity")]
     private static extern IntPtr handlePacket(ref int length);
     [DllImport("egp-net-plugin-Unity")]
@@ -46,16 +46,12 @@ public class NetworkManager : MonoBehaviour
     {
         if (enableNetworking)
         {
-            char[] ip = ("127.0.0.1").ToCharArray();
-            byte[] ipBytes = new byte[ip.Length];
-            for (int i = 0; i < ip.Length; i++)
-            {
-                ipBytes[i] = (byte)ip[i];
-            }
-            if (initNetworking(/*ipBytes*/))
-                Debug.Log("asdsda");
+            string ip = "127.0.0.1";
+            IntPtr ipPtr = Marshal.StringToHGlobalAnsi(ip);
+            if (initNetworking(ipPtr))
+                Debug.Log("Connecting");
             else
-                Debug.Log("why");
+                Debug.Log("Could not connect");
         }
     }
 
