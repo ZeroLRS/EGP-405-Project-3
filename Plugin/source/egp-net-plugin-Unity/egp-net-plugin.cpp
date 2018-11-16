@@ -149,9 +149,26 @@ extern "C"
 			{
 				RakNet::RakString rs;
 				RakNet::BitStream bsIn(packet->data, packet->length, false);
-		
-				*length = packet->length;
-				return (char*) packet->data;
+				
+				bsIn.IgnoreBytes(sizeof(RakNet::MessageID));
+				RakNet::Time dt, ourt, theirt;
+
+				ourt = RakNet::GetTime();
+				bsIn.Read(theirt);
+				dt = ourt - theirt;
+
+				RakNet::BitStream bsOut;
+				bsOut.Write((RakNet::MessageID)DemoPeerManager::UPDATE_NETWORK_PLAYER);
+				bsOut.Write(sizeof(uint64_t));
+				bsOut.Write(dt);
+				bsOut.Write(bsIn);
+
+				bsOut.Read(rs);
+
+				char* returnThis = (char*)rs.C_String();
+
+				*length = (int)strlen(returnThis);
+				return returnThis;
 			}
 			break;
 		
@@ -182,6 +199,10 @@ extern "C"
 	{
 		RakNet::BitStream bsOut;
 		bsOut.Write((RakNet::MessageID)DemoPeerManager::UPDATE_NETWORK_PLAYER);
+
+		const RakNet::Time timeSend = RakNet::GetTime();
+		bsOut.Write(timeSend);
+
 		bsOut.Write(guidLength);
 
 		for (int i = 0; i < guidLength; i++)

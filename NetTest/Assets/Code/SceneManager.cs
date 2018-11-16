@@ -121,7 +121,7 @@ public class SceneManager : MonoBehaviour
 
     void CreateEntityFromPacket(EntityPacket data)
     {
-        Entity newEntity = Instantiate(entityPrefab).GetComponent<Entity>();
+        NetworkPlayer newEntity = Instantiate(entityPrefab).GetComponent<NetworkPlayer>();
         
         if (!newEntity)
         {
@@ -133,6 +133,7 @@ public class SceneManager : MonoBehaviour
 
         newEntity.transform.position = data.position;
         newEntity.moveDestination = data.destination;
+        newEntity.latency = data.latency;
         newEntity.deadReckon = true;
         newEntity.UpdateState(data);
     }

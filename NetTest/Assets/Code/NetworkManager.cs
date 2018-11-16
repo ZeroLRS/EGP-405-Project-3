@@ -30,6 +30,7 @@ public class NetworkManager : MonoBehaviour
 {
     public bool enableNetworking;
     public SceneManager sceneManager; // TODO: Replace with entity manager for final.
+    public string ip = "127.0.0.1";
 
     [DllImport("egp-net-plugin-Unity")]
     private static extern int foo(int bar);
@@ -57,7 +58,6 @@ public class NetworkManager : MonoBehaviour
         if (enableNetworking)
         {
             lastNetworkUpdate = Time.time;
-            string ip = "127.0.0.1";
             IntPtr ipPtr = Marshal.StringToHGlobalAnsi(ip);
             if (initNetworking(ipPtr))
                 Debug.Log("Connecting");
@@ -150,6 +150,7 @@ public class NetworkManager : MonoBehaviour
                 newPacket.identifier = identifer;
                 newPacket.position = position;
                 newPacket.destination = destination;
+                newPacket.latency = 0.0f; // get latency from returnData
 
                 //Debug.Log(identifer);
 
@@ -217,6 +218,7 @@ public struct EntityPacket
     public Guid identifier;
     public Vector3 position;
     public Vector3 destination;
+    public float latency;
 }
 
 [StructLayout(LayoutKind.Sequential)]

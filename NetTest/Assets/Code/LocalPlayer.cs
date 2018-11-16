@@ -15,6 +15,9 @@ public class LocalPlayer : Entity
     // Update is called once per frame
     override protected void EntityUpdate()
     {
+
+        move();
+
         if (Input.GetMouseButton(0))
         {
             Vector3 attemptMove = Camera.main.ScreenToWorldPoint(Input.mousePosition);
