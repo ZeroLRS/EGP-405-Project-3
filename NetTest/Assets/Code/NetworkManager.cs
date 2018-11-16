@@ -75,7 +75,7 @@ public class NetworkManager : MonoBehaviour
             //Debug.Log("Current Time: " + Time.time + " Last Update + Interval: " + lastNetworkUpdate + networkTickRateMS);
             if (Time.time >= lastNetworkUpdate + networkTickRateMS)
             {
-                Debug.Log("Network Update");
+                //Debug.Log("Network Update");
                 // Reset the timer
                 lastNetworkUpdate = Time.time;
                 // Debug Test
@@ -186,7 +186,7 @@ public class NetworkManager : MonoBehaviour
 
     private Guid bytesToGuid(byte[] data, int startIndex, int length)
     {
-        Debug.Log("Guid Length: " + length);
+        //Debug.Log("Guid Length: " + length);
         byte[] guidBytes = new byte[length];
         for (int i = 0; i < length; i++)
         {

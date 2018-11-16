@@ -2628,6 +2628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableNetworking: 1
+  sceneManager: {fileID: 2080143894}
 --- !u!114 &2080143894
 MonoBehaviour:
   m_ObjectHideFlags: 0

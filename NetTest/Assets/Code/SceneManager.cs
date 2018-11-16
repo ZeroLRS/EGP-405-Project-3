@@ -114,7 +114,7 @@ public class SceneManager : MonoBehaviour
             --numLoops;
         }
         
-        Debug.LogWarning("Packet was not found for entity " + entity.gameObject.name + ". Unable to update");
+        //Debug.LogWarning("Packet was not found for entity " + entity.gameObject.name + ". Unable to update");
 
         return false;
     }
@@ -133,7 +133,7 @@ public class SceneManager : MonoBehaviour
 
         newEntity.transform.position = data.position;
         newEntity.moveDestination = data.destination;
-        newEntity.deadReckon = false;
+        //newEntity.deadReckon = true;
         newEntity.acceleration = 2.0f;
         newEntity.UpdateState(data);
     }
