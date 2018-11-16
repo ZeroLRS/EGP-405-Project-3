@@ -48,8 +48,8 @@ public class NetworkManager : MonoBehaviour
     private static extern bool sendEntityToServer(int guidSize, byte[] guid, SimpleVector3 position, SimpleVector3 destination);
 
     // We want to send data to the server 10 times a second
-    //private const float networkTickRateMS = 100.0f / 1000.0f;
-    private const float networkTickRateMS = 500.0f / 1000.0f; //Debug: twice a second
+    private const float networkTickRateMS = 100.0f / 1000.0f;
+    //private const float networkTickRateMS = 500.0f / 1000.0f; //Debug: twice a second
     private float lastNetworkUpdate;
 
     // Start is called before the first frame update
@@ -115,21 +115,29 @@ public class NetworkManager : MonoBehaviour
 
         Marshal.Copy(returnPtr, returnData, 0, length);
 
-        int messageID = returnData[index];
-        index += 4;
+        if (returnData.Length == 0 || returnData.Length == 9 || returnData[0] == 110)
+            return;
+        
+        Debug.Log("Len: " + length);
+        Debug.Log("Ret0 " + returnData[0]);
 
+        int messageID = returnData[index];
+        index++;
+
+        //Debug.Log(messageID);
         switch (messageID)
         {
            case (int)MessageID.UPDATE_NETWORK_PLAYER:
            {
-                //Debug.Log("Update Network Player");
-                
-                int guidLength = returnData[index];
-                index++;
-
+                Debug.Log("Update Network Player");
+                    
                 UInt64 latency = bytesToUInt64(returnData, index);
                 Debug.Log(latency);
-                    return;
+                index += 8;
+
+                index += 3;
+                int guidLength = returnData[index];
+                index++;
                 
                 Guid identifer = bytesToGuid(returnData, index, guidLength);
                 index += guidLength;
@@ -163,7 +171,7 @@ public class NetworkManager : MonoBehaviour
                     SceneManager.entityPackets.Enqueue(newPacket);
                 }
 
-                //Debug.Log("Done");
+                Debug.Log("indexfinal: " + index);
             }
                 break;
             case 110: // If there isn't nodata.

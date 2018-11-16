@@ -148,7 +148,7 @@ extern "C"
 			printf("DEBUG MESSAGE: received packet ID_GAME_MESSAGE_1.\n");
 			{
 				RakNet::RakString rs;
-				RakNet::BitStream bsIn(packet->data, packet->length, false);
+				RakNet::BitStream bsIn(packet->data, packet->length, true);
 				
 				bsIn.IgnoreBytes(sizeof(RakNet::MessageID));
 				RakNet::Time dt, ourt, theirt;
@@ -161,13 +161,30 @@ extern "C"
 				bsOut.Write((RakNet::MessageID)DemoPeerManager::UPDATE_NETWORK_PLAYER);
 				bsOut.Write(dt);
 				bsOut.Write(bsIn);
+				//bsOut.Read(outPut, bsOut.GetNumberOfBytesUsed());
 
-				bsOut.Read(rs);
+				unsigned char* returnStr = bsIn.GetData();
+				unsigned char* returnStr1 = bsIn.GetData() + 1;
+				unsigned char* returnStr2 = bsIn.GetData() + 2;
+				unsigned char* returnStr3 = bsIn.GetData() + 3;
+				unsigned char* returnStr4 = bsIn.GetData() + 4;
+				unsigned char* returnStr5 = bsIn.GetData() + 5;
+				unsigned char* returnStr6 = bsIn.GetData() + 6;
+				unsigned char* returnStr7 = bsIn.GetData() + 7;
 
-				char* returnThis = (char*)rs.C_String();
+				int byteCount = (int) bsOut.GetNumberOfBytesUsed();
+				char* godpls = (char*)malloc(byteCount);
+				//godpls[byteCount] = '\0';
+				bsOut.Read(godpls, byteCount);
+				//for (size_t i = 0; i < bsOut.GetNumberOfBytesUsed(); i++)
+				//{
+				//	godpls[i] = bsOut.GetData() + i;
+				//}
 
-				*length = (int)strlen(returnThis);
-				return returnThis;
+				char* returnThis = (char*)returnStr;
+
+				*length = (int)byteCount;
+				return godpls;
 			}
 			break;
 		
