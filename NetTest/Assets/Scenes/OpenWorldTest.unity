@@ -2165,7 +2165,7 @@ MonoBehaviour:
   seSprite: {fileID: 21300000, guid: de61f2f43f6bd044aa3998c38b0aaf7b, type: 3}
   swSprite: {fileID: 21300000, guid: b0afcc9b66f83e441bc452ce28c24c4d, type: 3}
   spriteRenderer: {fileID: 889693138}
-  acceleration: 2
+  speed: 2
   moveDirection: {x: 0, y: 0, z: 0}
   moveDestination: {x: 0, y: 0, z: 0}
   deadReckon: 1
