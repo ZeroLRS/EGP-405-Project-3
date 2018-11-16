@@ -21,5 +21,7 @@ public class NetworkPlayer : Entity
     // Update is called once per frame
     override protected void EntityUpdate()
     {
+        moveDirection = moveDestination - transform.position;
+        moveDirection.Normalize();
     }
 }

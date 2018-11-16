@@ -2168,7 +2168,7 @@ MonoBehaviour:
   speed: 2
   moveDirection: {x: 0, y: 0, z: 0}
   moveDestination: {x: 0, y: 0, z: 0}
-  deadReckon: 1
+  deadReckon: 0
   serverPosTest: {fileID: 1448224700}
 --- !u!1 &1262319916
 GameObject:

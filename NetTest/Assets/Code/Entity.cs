@@ -117,13 +117,13 @@ public abstract class Entity : MonoBehaviour
         // If we have a destination, move towards it
         if (Vector3.Distance(transform.position, moveDestination) > 0.05f
             && transform.position != moveDestination)
-        {               
+        {
             Vector3 Pt = transform.position;
-            Vector3 PtDeriv = moveDirection * (speed * Time.deltaTime);
+            Vector3 PtDeriv = moveDirection * (speed);
             //Pt.x += (moveDirection.x) + (speed * Time.deltaTime);
             //Pt.y += (moveDirection.y) + (speed * Time.deltaTime);
 
-            Vector3 destination = Pt + PtDeriv;
+            Vector3 destination = Pt + (PtDeriv * Time.deltaTime);
             transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 
             // If we're close enough, snap us to the exact position

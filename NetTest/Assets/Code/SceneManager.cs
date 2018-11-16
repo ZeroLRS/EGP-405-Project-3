@@ -133,7 +133,7 @@ public class SceneManager : MonoBehaviour
 
         newEntity.transform.position = data.position;
         newEntity.moveDestination = data.destination;
-        //newEntity.deadReckon = true;
+        newEntity.deadReckon = true;
         newEntity.UpdateState(data);
     }
 }
