@@ -11,7 +11,7 @@ public abstract class Entity : MonoBehaviour
     public Sprite neSprite, nwSprite, seSprite, swSprite;
     public SpriteRenderer spriteRenderer;
 
-    public float acceleration;
+    public float speed;
     //public Vector3 velocity;
     public Vector3 moveDirection;
     public Vector3 moveDestination;
@@ -89,7 +89,7 @@ public abstract class Entity : MonoBehaviour
         if (Vector3.Distance(transform.position, moveDestination) > 0.01f
             && transform.position != moveDestination)
         {
-            transform.position = Vector3.MoveTowards(transform.position, moveDestination, acceleration * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, moveDestination, speed * Time.deltaTime);
             // If we're close enough, snap us to the exact position
             if (Vector3.Distance(transform.position, moveDestination) < 0.01f)
             {
@@ -104,7 +104,7 @@ public abstract class Entity : MonoBehaviour
         if (Vector3.Distance(serverPosTest.position, moveDestination) > 0.01f
             && serverPosTest.position != moveDestination)
         {
-            serverPosTest.position = Vector3.MoveTowards(serverPosTest.position, moveDestination, 0.5f * acceleration * Time.deltaTime);
+            serverPosTest.position = Vector3.MoveTowards(serverPosTest.position, moveDestination, 0.5f * speed * Time.deltaTime);
             // If we're close enough, snap us to the exact position
             if (Vector3.Distance(serverPosTest.position, moveDestination) < 0.01f)
             {
@@ -119,12 +119,12 @@ public abstract class Entity : MonoBehaviour
             && transform.position != moveDestination)
         {               
             Vector3 Pt = transform.position;
-            Vector3 PtDeriv = moveDirection * (acceleration * Time.deltaTime);
-            //Pt.x += (moveDirection.x) + (acceleration * Time.deltaTime);
-            //Pt.y += (moveDirection.y) + (acceleration * Time.deltaTime);
+            Vector3 PtDeriv = moveDirection * (speed * Time.deltaTime);
+            //Pt.x += (moveDirection.x) + (speed * Time.deltaTime);
+            //Pt.y += (moveDirection.y) + (speed * Time.deltaTime);
 
             Vector3 destination = Pt + PtDeriv;
-            transform.position = Vector3.MoveTowards(transform.position, destination, acceleration * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 
             // If we're close enough, snap us to the exact position
             if (Vector3.Distance(transform.position, moveDestination) < 0.05f)

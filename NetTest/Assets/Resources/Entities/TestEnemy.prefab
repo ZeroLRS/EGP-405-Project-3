@@ -49,9 +49,11 @@ MonoBehaviour:
   seSprite: {fileID: 21300000, guid: 7e0e8e295308ec243bc499d7de8d5e04, type: 3}
   swSprite: {fileID: 21300000, guid: 93db46eb15cc653479a41404b743cd82, type: 3}
   spriteRenderer: {fileID: 8691098081085853562}
-  velocity: {x: 0, y: 0, z: 0}
+  speed: 2
   moveDirection: {x: 0, y: 0, z: 0}
   moveDestination: {x: 0, y: 0, z: 0}
+  deadReckon: 0
+  serverPosTest: {fileID: 0}
 --- !u!212 &8691098081085853562
 SpriteRenderer:
   m_ObjectHideFlags: 0
