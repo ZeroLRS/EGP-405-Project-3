@@ -159,7 +159,6 @@ extern "C"
 
 				RakNet::BitStream bsOut;
 				bsOut.Write((RakNet::MessageID)DemoPeerManager::UPDATE_NETWORK_PLAYER);
-				bsOut.Write(sizeof(uint64_t));
 				bsOut.Write(dt);
 				bsOut.Write(bsIn);
 

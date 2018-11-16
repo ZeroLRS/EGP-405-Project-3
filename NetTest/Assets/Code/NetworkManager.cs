@@ -126,6 +126,8 @@ public class NetworkManager : MonoBehaviour
                 
                 int guidLength = returnData[index];
                 index++;
+
+                UInt64 latency;
                 
                 Guid identifer = bytesToGuid(returnData, index, guidLength);
                 index += guidLength;
