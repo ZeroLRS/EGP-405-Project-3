@@ -72,4 +72,20 @@ public class NetworkPlayer : Entity
         return blendPos;
     }
 
+    public override void UpdateState(EntityPacket packet)
+    {
+        if (identifier != packet.identifier)
+            identifier = packet.identifier;
+
+        moveDestination = packet.destination;
+
+        if (deadReckon)
+        {
+            serverPos = packet.position;
+            latency = packet.latency;
+        }
+        else
+            transform.position = packet.position;
+    }
+
 }

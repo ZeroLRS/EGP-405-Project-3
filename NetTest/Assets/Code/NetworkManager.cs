@@ -127,7 +127,9 @@ public class NetworkManager : MonoBehaviour
                 int guidLength = returnData[index];
                 index++;
 
-                UInt64 latency;
+                UInt64 latency = bytesToUInt64(returnData, index);
+                Debug.Log(latency);
+                    return;
                 
                 Guid identifer = bytesToGuid(returnData, index, guidLength);
                 index += guidLength;
@@ -175,6 +177,16 @@ public class NetworkManager : MonoBehaviour
                 break;
         }
         
+    }
+
+    private ulong bytesToUInt64(byte[] data, int startIndex)
+    {
+        byte[] reversed = new byte[8];
+        for (int i = 0; i < 8; i++)
+        {
+            reversed[i] = data[startIndex + 8 - i];
+        }
+        return BitConverter.ToUInt64(reversed, 0);
     }
 
     private float bytesToFloat(byte[] data, int startIndex)

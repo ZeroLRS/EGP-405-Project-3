@@ -34,4 +34,10 @@ public class LocalPlayer : Entity
 
         }
     }
+
+    public override void UpdateState(EntityPacket packet)
+    {
+        moveDestination = packet.destination;
+        transform.position = packet.position;
+    }
 }

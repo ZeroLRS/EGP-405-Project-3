@@ -77,19 +77,7 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
-    //public void UpdateState(EntityPacket packet)
-    //{
-    //    if(identifier != packet.identifier)
-    //        identifier = packet.identifier;
-    //
-    //    moveDestination = packet.destination;
-    //
-    //    if (deadReckon)
-    //        BlendWithReckoning(packet.position);
-    //    else
-    //        transform.position = packet.position;
-    //}
-
+    public abstract void UpdateState(EntityPacket packet);
     protected abstract void EntityUpdate();
     protected abstract void EntityStart();
 }
